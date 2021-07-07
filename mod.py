@@ -49,6 +49,7 @@ async def on_message(message):
             return
 
         if len(message.mentions) == 0 or len(message.mentions) > 1:
+            await message.channel.send(f"<@{message.author.id}> you need to mention the single user you are looking to talk with.")
             logging.info(f"Got message with zero, or to many mentions {message.mentions}")
             return
 
