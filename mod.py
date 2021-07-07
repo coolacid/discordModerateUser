@@ -18,14 +18,20 @@ client = discord.Client()
 #logging.basicConfig(level=logging.DEBUG)
 logging.basicConfig(level=logging.INFO)
 
-# TODO: Cleanup `activeChannels` by checking to see if the channel is deleted
 
 @client.event
 async def on_ready():
     print(f'{client.user} has connected to Discord!')
 
+# Cleanup `activeChannels` when channels are deleted
+@client.event
+async def on_guild_channel_delete(channel):
+    if channel.id in activeChannels:
+        activeChannels.remove(channel.id)
+
 @client.event
 async def on_message(message):
+    print(activeChannels)
     logging.debug(message)
     # If we're the bot, just return
     if message.author == client.user:
