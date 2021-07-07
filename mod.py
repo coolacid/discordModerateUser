@@ -10,11 +10,12 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 GUILDS = {
-            "82992652747800576": {
-                "category": 862445675890081804,
-                "roles": [862417502860476436],
-                "modChannels": [862407257583779860],
-                "activeChannels": [],
+            "82992652747800576": {                              # The Guild/Server ID
+                "command": "!moderate",                         # The command to listen for
+                "category": 862445675890081804,                 # The category ID to make the room in, or None
+                "roles": [862417502860476436],                  # List of role IDs to add to the room
+                "modChannels": [862407257583779860],            # List of channel IDs to listen for moderatation commands
+                "activeChannels": [],                           # Leave as blank list, for future use
             }
          }
 
@@ -39,7 +40,7 @@ async def on_message(message):
     guild = message.guild
     guildConfig = GUILDS[str(guild.id)]
 
-    if message.content.startswith("!moderate"):
+    if message.content.startswith(guildConfig['command']):
         # Check to see if we're in a configured moderation channel
         if message.channel.id not in guildConfig['modChannels']:
             logging.info(f"Got message in {message.channel.name} ({message.channel.id}) which is not configured")
