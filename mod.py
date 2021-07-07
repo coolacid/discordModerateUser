@@ -11,6 +11,8 @@ with open("config.yml", 'r') as stream:
 GUILDS = config['guilds']
 TOKEN = config['token']
 
+activeChannels = []
+
 client = discord.Client()
 
 #logging.basicConfig(level=logging.DEBUG)
@@ -58,7 +60,8 @@ async def on_message(message):
         # Create the channel using the users name
         overwrites = {
             guild.default_role: discord.PermissionOverwrite(read_messages=False),
-            guild.me: discord.PermissionOverwrite(read_messages=True)
+            guild.me: discord.PermissionOverwrite(read_messages=True),
+            moderatedUser: discord.PermissionOverwrite(read_messages=True)
         }
 
         for roleId in guildConfig['roles']:
@@ -71,7 +74,7 @@ async def on_message(message):
             category = None
 
         botChannel = await guild.create_text_channel(moderatedUser.name, overwrites=overwrites, category=category)
-        guildConfig['activeChannels'].append(botChannel.id)
+        activeChannels.append(botChannel.id)
 
         await botChannel.send(f"Welcome <@{moderatedUser.id}> to your moderation room, this room is logged.")
 
