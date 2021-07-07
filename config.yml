@@ -1,0 +1,9 @@
+token: <BOT TOKEN>
+guilds:
+    11111111111111111:                              # The Guild/Server ID
+        command: "!moderate"                        # The command to listen for
+        category: 222222222222222222                # The category ID to make the room in, or None
+        roles:                                      # List of role IDs to add to the room
+            - 333333333333333333 
+        modChannels:                                # List of channel IDs to listen for moderatation commands
+            - 444444444444444444

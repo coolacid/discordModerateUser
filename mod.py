@@ -3,23 +3,16 @@
 import discord
 import os
 import logging
+import yaml
 
-from dotenv import load_dotenv
+with open("config.yml", 'r') as stream:
+    config = yaml.safe_load(stream)
 
-load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
-
-GUILDS = {
-            "82992652747800576": {                              # The Guild/Server ID
-                "command": "!moderate",                         # The command to listen for
-                "category": 862445675890081804,                 # The category ID to make the room in, or None
-                "roles": [862417502860476436],                  # List of role IDs to add to the room
-                "modChannels": [862407257583779860],            # List of channel IDs to listen for moderatation commands
-                "activeChannels": [],                           # Leave as blank list, for future use
-            }
-         }
+GUILDS = config['guilds']
+TOKEN = config['token']
 
 client = discord.Client()
+
 #logging.basicConfig(level=logging.DEBUG)
 logging.basicConfig(level=logging.INFO)
 
@@ -38,7 +31,7 @@ async def on_message(message):
 
     # Check to see if the user is in a role that can moderate
     guild = message.guild
-    guildConfig = GUILDS[str(guild.id)]
+    guildConfig = GUILDS[guild.id]
 
     if message.content.startswith(guildConfig['command']):
         # Check to see if we're in a configured moderation channel
